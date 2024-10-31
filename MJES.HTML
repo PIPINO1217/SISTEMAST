@@ -87,8 +87,7 @@
             if (password === "1247") {
                 document.getElementById("login-section").style.display = "none";
                 document.getElementById("main-section").style.display = "block";
-                generateCodigo(); // Generar el código al ingresar
-                loadEquipos(); // Cargar equipos al inicio
+                function loadMessages(); // CARGAR MJES al ingresar
                 return false;
             } else {
                 alert("Código incorrecto.");
