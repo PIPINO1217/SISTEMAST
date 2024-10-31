@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente - Gestión de Equipos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilo para las tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #ff00f3;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .consultar-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cliente</h1>
+        <nav>
+            <ul>
+                <li><a class="button" href="index.html">Inicio</a></li>
+                <li><a class="button" href="tecnico.html">Técnico</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="consultar-container">
+            <h2>Consultar Estado de Equipos</h2>
+            <form onsubmit="return consultarEstado()">
+                <label for="codigo-consulta">Código de Identificación:</label>
+                <input type="text" id="codigo-consulta" placeholder="Ingresa tu código" required>
+                <button type="submit">Consultar</button>
+            </form>
+            <table id="resultado-consulta" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>NOMBRE</th>
+                        <th>MARCA</th>
+                        <th>MODELO</th>
+                        <th>INGRESO</th>
+                        <th>DIAGNOSTICO INICIAL</th>
+                        <th>PRESUPUESTO</th>
+                        <th>CODIGO</th>
+                        <th>ESTADO</th>
+                    </tr>
+                </thead>
+                <tbody id="datos-consulta"></tbody>
+            </table>
+        </div>
+
+        <div class="contacto-container">
+            <h2>Contacto</h2>
+            <form id="contacto-form" onsubmit="return enviarMensaje()">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required>
+
+                <label for="asunto">Asunto:</label>
+                <input type="text" id="asunto" required>
+
+                <label for="emisor">Emisor:</label>
+                <input type="text" id="emisor" required>
+
+                <label for="mensaje">Mensaje:</label>
+                <textarea id="mensaje" required></textarea>
+
+                <label for="codigo-identificacion">Código Identificación:</label>
+                <input type="text" id="codigo-identificacion" placeholder="Opcional">
+
+                <button type="submit">Enviar Mensaje</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Gestión de Equipos</p>
+    </footer>
+
+    <script>
+        function consultarEstado() {
+            const codigo = document.getElementById("codigo-consulta").value;
+            const equipo = JSON.parse(localStorage.getItem(`equipo_${codigo}`));
+
+            const resultadoConsulta = document.getElementById("resultado-consulta");
+            const datosConsulta = document.getElementById("datos-consulta");
+            datosConsulta.innerHTML = ''; // Limpiar tabla antes de mostrar nuevos datos
+
+            if (equipo) {
+                const row = `<tr>
+                    <td>${equipo.nombreCliente}</td>
+                    <td>${equipo.marca}</td>
+                    <td>${equipo.modelo}</td>
+                    <td>${equipo.fechaIngreso}</td>
+                    <td>${equipo.diagnostico}</td>
+                    <td>${equipo.presupuesto}</td>
+                    <td>${equipo.codigo}</td>
+                    <td>${equipo.estado}</td>
+                </tr>`;
+                datosConsulta.innerHTML = row;
+                resultadoConsulta.style.display = 'table'; // Mostrar tabla con resultados
+            } else {
+                alert("No se encontró información para el código proporcionado.");
+            }
+            return false; // Evitar el envío del formulario
+        }
+
+        function enviarMensaje() {
+            const fecha = document.getElementById("fecha").value;
+            const asunto = document.getElementById("asunto").value;
+            const emisor = document.getElementById("emisor").value;
+            const mensaje = document.getElementById("mensaje").value;
+            const codigoIdentificacion = document.getElementById("codigo-identificacion").value;
+
+            const mensajeData = {
+                fecha,
+                asunto,
+                emisor,
+                mensaje,
+                codigoIdentificacion
+            };
+
+            localStorage.setItem(`mensaje_${mensajeCount++}`, JSON.stringify(mensajeData));
+            alert("Mensaje enviado exitosamente.");
+
+            // Limpiar el formulario
+            document.getElementById("contacto-form").reset();
+            return false; // Evitar el envío del formulario
+        }
+    </script>
+</body>
+</html>
