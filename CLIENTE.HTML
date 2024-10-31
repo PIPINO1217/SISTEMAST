@@ -133,7 +133,7 @@
                 codigoIdentificacion
             };
 
-            localStorage.setItem(`mensaje_${mensajeCount++}`, JSON.stringify(mensajeData));
+            Object.keys(localStorage)(`mensaje_${mensajeCount++}`, JSON.stringify(mensajeData));
             alert("Mensaje enviado exitosamente.");
 
             // Limpiar el formulario
