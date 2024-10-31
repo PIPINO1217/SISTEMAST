@@ -44,9 +44,6 @@
     </header>
     <main>
 
-        <div id="main-section" style="display: none;">
-
-
             <h2>BANDEJA DE ENTRADA</h2>
             <div class="inbox">
                 <h3>MENSAJES RECIBIDOS</h3>
@@ -74,17 +71,6 @@
     <script>
         let mensajeCount = 0;
 
-        function validateLogin() {
-            const password = document.getElementById("password").value;
-            if (password === "1247") {
-                document.getElementById("login-section").style.display = "none";
-                document.getElementById("main-section").style.display = "block";
-                function loadMessages(); // CARGAR MJES al ingresar
-                return false;
-            } else {
-                alert("Código incorrecto.");
-                return false;
-            }
         }
 
         function loadMessages() {
