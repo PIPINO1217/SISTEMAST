@@ -132,8 +132,8 @@
                 mensaje,
                 codigoIdentificacion
             };
-
-            Object.keys(localStorage)(`mensaje_${mensajeCount++}`, JSON.stringify(mensajeData));
+            
+            localStorage.setItem(`mensaje_${codigo}`, JSON.stringify(mensajeData));
             alert("Mensaje enviado exitosamente.");
 
             // Limpiar el formulario
