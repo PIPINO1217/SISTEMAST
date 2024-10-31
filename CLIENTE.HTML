@@ -64,27 +64,6 @@
             </table>
         </div>
 
-        <div class="contacto-container">
-            <h2>Contacto</h2>
-            <form id="contacto-form" onsubmit="return enviarMensaje()">
-                <label for="fecha">Fecha:</label>
-                <input type="date" id="fecha" required>
-
-                <label for="asunto">Asunto:</label>
-                <input type="text" id="asunto" required>
-
-                <label for="emisor">Emisor:</label>
-                <input type="text" id="emisor" required>
-
-                <label for="mensaje">Mensaje:</label>
-                <textarea id="mensaje" required></textarea>
-
-                <label for="codigo-identificacion">Código Identificación:</label>
-                <input type="text" id="codigo-identificacion" placeholder="Opcional">
-
-                <button type="submit">Enviar Mensaje</button>
-            </form>
-        </div>
     </main>
     <footer>
         <p>&copy; 2024 Gestión de Equipos</p>
@@ -118,28 +97,6 @@
             return false; // Evitar el envío del formulario
         }
 
-        function enviarMensaje() {
-            const fecha = document.getElementById("fecha").value;
-            const asunto = document.getElementById("asunto").value;
-            const emisor = document.getElementById("emisor").value;
-            const mensaje = document.getElementById("mensaje").value;
-            const codigoIdentificacion = document.getElementById("codigo-identificacion").value;
-
-            const mensajeData = {
-                fecha,
-                asunto,
-                emisor,
-                mensaje,
-                codigoIdentificacion
-            };
-            
-            localStorage.setItem(`mensaje_${codigo}`, JSON.stringify(mensajeData));
-            alert("Mensaje enviado exitosamente.");
-
-            // Limpiar el formulario
-            document.getElementById("contacto-form").reset();
-            return false; // Evitar el envío del formulario
-        }
     </script>
 </body>
 </html>
