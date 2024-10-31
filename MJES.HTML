@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Técnico - Gestión de Equipos</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilo para las tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #ff00f3;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .inbox {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ENCARGADO</h1>
+        <nav>
+            <ul>
+                <li><a class="button" href="index.html">INICIO</a></li>
+                <li><a class="button" href="cliente.html">CLIENTE</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div id="login-section">
+            <h2>Ingreso de Código de Acceso</h2>
+            <form onsubmit="return validateLogin()">
+                <label for="password">Código de Acceso:</label>
+                <input type="password" id="password" placeholder="Ingresa tu código" required>
+                <button type="submit">Ingresar</button>
+            </form>
+        </div>
+
+        <div id="main-section" style="display: none;">
+
+
+            <h2>BANDEJA DE ENTRADA</h2>
+            <div class="inbox">
+                <h3>MENSAJES RECIBIDOS</h3>
+                <table id="bandeja-entrada">
+                    <thead>
+                        <tr>
+                            <th>FECHA</th>
+                            <th>ASUNTO</th>
+                            <th>EMISOR</th>
+                            <th>MENSAJE</th>
+                            <th>CODIGO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="datos-mensajes"></tbody>
+                </table>
+            </div>
+
+
+    </main>
+    <footer>
+        <p>&copy; 2024 Gestión de Equipos</p>
+    </footer>
+
+    <script>
+        let mensajeCount = 0;
+
+        function validateLogin() {
+            const password = document.getElementById("password").value;
+            if (password === "1247") {
+                document.getElementById("login-section").style.display = "none";
+                document.getElementById("main-section").style.display = "block";
+                generateCodigo(); // Generar el código al ingresar
+                loadEquipos(); // Cargar equipos al inicio
+                return false;
+            } else {
+                alert("Código incorrecto.");
+                return false;
+            }
+        }
+
+        function loadMessages() {
+            const mensajes = Object.keys(localStorage)
+                .filter(key => key.startsWith("mensaje_"))
+                .map(key => JSON.parse(localStorage.getItem(key)));
+
+            const mensajesTableBody = document.getElementById("datos-mensajes");
+            mensajes.forEach(mensaje => {
+                const row = `<tr>
+                    <td>${mensaje.fecha}</td>
+                    <td>${mensaje.asunto}</td>
+                    <td>${mensaje.emisor}</td>
+                    <td>${mensaje.mensaje}</td>
+                    <td>${mensaje.codigoIdentificacion}</td>
+                    <td>
+                        <button onclick="modificarMensaje(this)">MODIFICAR</button>
+                        <button onclick="borrarMensaje(this)">BORRAR</button>
+                    </td>
+                </tr>`;
+                mensajesTableBody.innerHTML += row;
+            });
+        }
+
+
+        function modificarMensaje(button) {
+            const row = button.parentNode.parentNode;
+            const cells = row.querySelectorAll("td");
+            for (let i = 0; i < cells.length - 1; i++) {
+                cells[i].setAttribute("contenteditable", "true");
+            }
+            button.innerText = "GUARDAR";
+            button.onclick = function() {
+                for (let i = 0; i < cells.length - 1; i++) {
+                    cells[i].setAttribute("contenteditable", "false");
+                }
+                button.innerText = "MODIFICAR";
+                button.onclick = modificarMensaje;
+            };
+        }
+
+        function borrarMensaje(button) {
+            const row = button.parentNode.parentNode;
+            row.remove();
+            const codigoIdentificacion = row.querySelector("td:nth-child(5)").innerText;
+            localStorage.removeItem(`mensaje_${codigoIdentificacion}`);
+        }
+
+        loadMessages(); // Cargar mensajes al inicio
+        loadEquipos();  // Cargar equipos al inicio
+    </script>
+</body>
+</html>
